@@ -1,9 +1,9 @@
 package com.example.navigationdrawercompose
 
-
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,15 +11,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -37,6 +35,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+
+    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
+@ExperimentalAnimationApi
 @Composable
 fun MainScreen() {
 
@@ -74,32 +74,30 @@ fun MainScreen() {
 fun TopBar(scope: CoroutineScope, scaffoldState: ScaffoldState) {
 
     TopAppBar(
-        title = { Text(text = "Navigation Drawer", fontSize = 18.sp) },
+        title = { Text(text = "MUSICA",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold, color = Color.Black) },
         navigationIcon = {
             IconButton(onClick = {
                 scope.launch {
                     scaffoldState.drawerState.open()
                 }
             }) {
-                Icon(Icons.Filled.Menu, "")
+                Icon(Icons.Filled.Menu, "",tint = Color.Black)
             }
         },
-        backgroundColor = Color.Green,
+        backgroundColor = Color(224, 254, 254) ,
         contentColor = Color.Black
     )
-
 }
 
 @Composable
 fun Drawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navController: NavController) {
 
     val items = listOf(
-        NavegacionItem.Home,
-        NavegacionItem.Profile,
-        NavegacionItem.Settings,
-        NavegacionItem.Share,
-        NavegacionItem.Contact
-    )
+        NavegacionItem.Insertar,
+        NavegacionItem.Borrar,
+        NavegacionItem.Mostrar)
 
     Column(
         modifier = Modifier
@@ -110,27 +108,24 @@ fun Drawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navController: N
             modifier = Modifier
                 .fillMaxWidth()
                 .height(120.dp)
-                .background(Color.Green),
+                .background(Color(224, 254, 254)),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
 
             Image(
-                painter = painterResource(id = R.drawable.ima08),
+                painter = painterResource(id = R.drawable.img_1),
                 contentDescription = "",
                 modifier = Modifier
-                    .height(100.dp)
+                    .height(90.dp)
                     .fillMaxWidth()
-                    .padding(10.dp)
-            )
-
+                    .padding(10.dp))
         }
 
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(5.dp)
-        )
+                .height(5.dp))
 
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -156,22 +151,13 @@ fun Drawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navController: N
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Text(
-            text = "Kiran Bahalaskar",
-            color = Color.Black,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(12.dp)
-                .align(Alignment.CenterHorizontally)
-        )
 
     }
 }
 
 @Composable
 fun DrawerItem(item: NavegacionItem, selected: Boolean, onItemClick: (NavegacionItem) -> Unit) {
-    val background = if (selected) Color.Red else Color.Transparent
+    val background = if (selected) Color(230,230,230) else Color.Transparent
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -202,135 +188,28 @@ fun DrawerItem(item: NavegacionItem, selected: Boolean, onItemClick: (Navegacion
 
 }
 
-@Composable
-fun HomeScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Text(
-            text = "Home Screen",
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            fontSize = 30.sp,
-            textAlign = TextAlign.Center
-        )
-
-    }
-}
-
-@Composable
-fun ProfileScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Text(
-            text = "Profile Screen",
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            fontSize = 30.sp,
-            textAlign = TextAlign.Center
-        )
-
-    }
-}
-
-@Composable
-fun SettingsScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Text(
-            text = "Settings Screen",
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            fontSize = 30.sp,
-            textAlign = TextAlign.Center
-        )
-
-    }
-}
-
-@Composable
-fun ShareScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Text(
-            text = "Share Screen",
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            fontSize = 30.sp,
-            textAlign = TextAlign.Center
-        )
-
-    }
-}
-
-@Composable
-fun ContactScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Text(
-            text = "Contacto",
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            fontSize = 30.sp,
-            textAlign = TextAlign.Center
-        )
-
-    }
-}
-
+@ExperimentalAnimationApi
 @Composable
 fun Navigation(navController: NavHostController) {
 
-    NavHost(navController, startDestination = NavegacionItem.Home.route) {
+    NavHost(navController, startDestination = NavegacionItem.Insertar.route) {
 
-        composable(NavegacionItem.Home.route) {
-            HomeScreen()
+        composable(NavegacionItem.Insertar.route) {
+            PantallaInsert()
         }
 
-        composable(NavegacionItem.Profile.route) {
-            ProfileScreen()
+        composable(NavegacionItem.Borrar.route) {
+            PantallaEliminar()
         }
 
-        composable(NavegacionItem.Settings.route) {
-            SettingsScreen()
+        composable(NavegacionItem.Mostrar.route) {
+            PantallaMostrar()
         }
-
-        composable(NavegacionItem.Share.route) {
-            ShareScreen()
-        }
-
-        composable(NavegacionItem.Contact.route) {
-            ContactScreen()
-        }
-
     }
 
 }
 
+@ExperimentalAnimationApi
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
